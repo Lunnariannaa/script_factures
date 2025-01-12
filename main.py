@@ -7,7 +7,7 @@ chrome_options.add_argument("--headless")
 chrome_options.add_argument("--no-sandbox")
 chrome_options.add_argument("--disable-dev-shm-usage")
 
-service = Service("C:\big script\chromedriver-win64")
+service = Service("C:\big script\chromedriver.exe")
 
 driver = webdriver.Chrome(service=service, options=chrome_options)
 
