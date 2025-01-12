@@ -1,34 +1,37 @@
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.chrome.options import Options
 import time
-import os
 
-# Configuration du navigateur
-driver = webdriver.Chrome()
+chrome_options = Options()
+chrome_options.add_argument("--headless")
+chrome_options.add_argument("--no-sandbox")
+chrome_options.add_argument("--disable-dev-shm-usage")
+chrome_options.add_argument("--disable-gpu")  # Optionnel : désactive le GPU
 
-# URL et identifiants du site
-site_url = "https://example.com"
-username = "votre_email@example.com"
-password = "votre_mot_de_passe"
+service = Service("/usr/bin/chromedriver")
 
-# Connexion au site
-driver.get(site_url)
-time.sleep(2)
+driver = webdriver.Chrome(service=service, options=chrome_options)
 
-# Remplir les champs d'identifiant et de mot de passe
-driver.find_element(By.ID, "login_field").send_keys(username)
-driver.find_element(By.ID, "password").send_keys(password)
-driver.find_element(By.NAME, "commit").click()
+try:
+    site_url = "https://example.com"
+    username = "votre_email@example.com"
+    password = "votre_mot_de_passe"
 
-# Naviguer vers la section des factures
-time.sleep(3)
-driver.find_element(By.LINK_TEXT, "Mes Factures").click()
+    driver.get(site_url)
+    time.sleep(2)
 
-# Télécharger les fichiers
-factures = driver.find_elements(By.LINK_TEXT, "Télécharger PDF")
-for facture in factures:
-    facture.click()
-    time.sleep(1)
+    driver.find_element(By.ID, "login_field").send_keys(username)
+    driver.find_element(By.ID, "password").send_keys(password)
+    driver.find_element(By.NAME, "commit").click()
 
-driver.quit()
+    time.sleep(3)
+    driver.find_element(By.LINK_TEXT, "Mes Factures").click()
+
+    factures = driver.find_elements(By.LINK_TEXT, "Télécharger PDF")
+    for facture in factures:
+        facture.click()
+        time.sleep(1)
+finally:
+    driver.quit()
