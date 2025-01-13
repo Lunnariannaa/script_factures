@@ -1,6 +1,7 @@
 import time
 
 from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 
@@ -11,6 +12,8 @@ chrome_options.add_argument("--disable-dev-shm-usage")
 
 service = Service(r"C:\script_factures\chromedriver")
 
+driver_path = r"C:\script_factures\chromedriver.exe"
+driver = webdriver.Chrome(executable_path=driver_path)
 driver = webdriver.Chrome(service=service, options=chrome_options)
 
 try:
