@@ -11,6 +11,7 @@ chrome_options.add_argument("--no-sandbox")
 chrome_options.add_argument("--disable-dev-shm-usage")
 
 service = Service(r"C:\script_factures\chromedriver")
+service = Service(ChromeDriverManager().install())
 
 driver_path = r"C:\script_factures\chromedriver.exe"
 driver = webdriver.Chrome(executable_path=driver_path)
