@@ -1,9 +1,9 @@
 import time
-
 from selenium import webdriver
-from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from webdriver_manager.chrome import ChromeDriverManager
 
 chrome_options = Options()
 chrome_options.add_argument("--headless")
@@ -30,11 +30,13 @@ try:
     driver.find_element(By.NAME, "commit").click()
 
     time.sleep(3)
+
     driver.find_element(By.LINK_TEXT, "Mes Factures").click()
 
     factures = driver.find_elements(By.LINK_TEXT, "Télécharger PDF")
     for facture in factures:
         facture.click()
         time.sleep(1)
+
 finally:
     driver.quit()
