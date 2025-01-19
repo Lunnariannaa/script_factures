@@ -19,11 +19,12 @@ RUN apt-get update && apt-get install -y \
     libappindicator3-1 \
     xdg-utils \
     libu2f-udev \
-    xvfb
+    xvfb \
+    gnupg
 
 # Ajouter la clé et le dépôt de Google Chrome
-RUN wget -q -O /usr/share/keyrings/google-linux-keyring.gpg https://dl.google.com/linux/linux_signing_key.pub && \
-    echo "deb [signed-by=/usr/share/keyrings/google-linux-keyring.gpg] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list
+RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | gpg --dearmor > /usr/share/keyrings/google-chrome-keyring.gpg && \
+    echo "deb [signed-by=/usr/share/keyrings/google-chrome-keyring.gpg] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list
 
 # Installer Google Chrome
 RUN apt-get update && apt-get install -y google-chrome-stable
@@ -35,7 +36,7 @@ RUN CHROME_VERSION=$(google-chrome --version | awk '{print $3}' | cut -d '.' -f 
     chmod +x /usr/local/bin/chromedriver && \
     rm -rf /tmp/chromedriver.zip
 
-# Installer les bibliothèques Python
+# Copier le fichier requirements.txt et installer les bibliothèques Python
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 
