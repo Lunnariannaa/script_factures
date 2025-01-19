@@ -29,9 +29,12 @@ RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | gpg --dearm
 # Installer Google Chrome
 RUN apt-get update && apt-get install -y google-chrome-stable
 
-# Télécharger et configurer ChromeDriver
-RUN CHROME_VERSION=$(google-chrome --version | awk '{print $3}' | cut -d '.' -f 1) && \
-    wget -q "https://chromedriver.storage.googleapis.com/$CHROME_VERSION/chromedriver_linux64.zip" -O /tmp/chromedriver.zip && \
+# Vérifier la version de Chrome installée
+RUN google-chrome --version
+
+# Télécharger et configurer ChromeDriver avec une version spécifique
+ENV CHROME_DRIVER_VERSION=114.0.5735.90
+RUN wget -q "https://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip" -O /tmp/chromedriver.zip && \
     unzip /tmp/chromedriver.zip -d /usr/local/bin && \
     chmod +x /usr/local/bin/chromedriver && \
     rm -rf /tmp/chromedriver.zip
